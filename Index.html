@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Real Bus Tracker</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBO1MY6IE3t3R9PNNGnSMqKmcFsF-2VFtI&libraries=geometry"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h3>Real Bus Tracker</h3>
+  <div id="map"></div>
+
+  <script>
+    const busStops = [
+      { lat: 42.359244, lng: -71.093729 },
+      { lat: 42.360175, lng: -71.094915 },
+      {lat: 42.360698, lng: -71.0958 },
+      {lat: 42.362953, lng: -71.099558 },
+      {lat: 42.365248, lng: -71.103476 },
+      {lat: 42.366806, lng: -71.106067 },
+      {lat: 42.368355, lng: -71.108717 },
+      {lat: 42.369192, lng: -71.110799 },
+      {lat: 42.370218, lng: -71.113095 },
+      {lat: 42.372085, lng: -71.115476 },
+      {lat: 42.373016, lng: -71.117585 },
+      {lat: 42.374863, lng: -71.118625 },
+    ];
+
+    let map;
+    let marker;
+    let counter = 0;
+
+    function getRandomColor()  {
+      const letters = '0123456789ABCDEF'
+      let color = '#';
+      for (let i=0; i< 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function initializeMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 42.365554, lng: -71.104081 },
+        zoom: 14,
+      });
+
+      marker = new google.maps.Marker({
+        map: map,
+        position: { lat: 42.357575, lng: -71.092761 },
+        icon: {
+          path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+          fillColor: getRandomColor(),
+          fillOpacity: 2,
+          strokeColor: 'black',
+          strokeWeight: 3,
+          scale: 4,
+        },
+      });
+
+      move();
+    }
+
+    function move() {
+      setTimeout(() => {
+        if (counter >= busStops.length) return;
+        marker.setPosition(busStops[counter]);
+        marker.setIcon({
+          path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+          fillColor: getRandomColor(),
+          fillOpacity: 0.8,
+          strokeColor: 'black',
+          strokeWeight: 3,
+          scale: 4,
+        });
+        counter++;
+        move();
+      }, 1000);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initializeMap);
+  </script>
+</body>
+
+</html>
